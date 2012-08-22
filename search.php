@@ -9,12 +9,13 @@ if(!isset($_GET['q']) || empty($_GET['q'])){
 	die(json_encode(array('status' => STATUS_EMPTY_QUERY)));
 }
 $searchQuery = $_GET['q'];
+$page = (isset($_GET['p']) && intval($_GET['p']) > 0) ? intval($_GET['p']) : 1;
 include('phpQuery.php');
 
 $location_id = 653240;
-$limit = 20;
+$limit = 10;
 $premium_limit = 2;
-$avitoSearchURL = 'http://m.avito.ru/items?query='.$searchQuery.'&limit='.$limit.'&location_id='.$location_id.'&premium_limit='.$premium_limit;
+$avitoSearchURL = 'http://m.avito.ru/items?query='.$searchQuery.'&limit='.$limit.'&location_id='.$location_id.'&premium_limit='.$premium_limit.'&page='.$page;
 
 $document = phpQuery::newDocumentFileHTML($avitoSearchURL);
 $productElements = $document->find('li.arrow.img');
