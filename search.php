@@ -16,7 +16,7 @@ $limit = 20;
 $premium_limit = 2;
 $avitoSearchURL = 'http://m.avito.ru/items?query='.$searchQuery.'&limit='.$limit.'&location_id='.$location_id.'&premium_limit='.$premium_limit;
 
-$document = phpQuery::newDocumentFileHTML($avitoSearchURL, $charset = 'utf-8');
+$document = phpQuery::newDocumentFileHTML($avitoSearchURL);
 $productElements = $document->find('li.arrow.img');
 
 $arSearchResultsData = array();
@@ -24,6 +24,9 @@ foreach($productElements as $productElement){
 	$productElement = pq($productElement);
 
 	$productTitle = $productElement->find('.thumb img')->attr('alt');
+	if($productTitle == 'Нет фото'){
+		$productTitle = $productElement->find('.title .long')->text();
+	}
 	$productImage = $productElement->find('.thumb img')->attr('src');
 	$productPrice = $productElement->find('.price')->text();
 	$productID = str_replace('/item/', '', $productElement->find('>a')->attr('href'));
@@ -37,5 +40,6 @@ foreach($productElements as $productElement){
 }
 echo json_encode(array(
 	'status'	=> STATUS_OK,
-	'result'	=> $arSearchResultsData
+	'result'	=> $arSearchResultsData,
+	'origin'	=> $avitoSearchURL
 	));
