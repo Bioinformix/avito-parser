@@ -25,7 +25,7 @@ foreach($productElements as $productElement){
 
 	$productTitle = $productElement->find('.thumb img')->attr('alt');
 	if($productTitle == 'Нет фото'){
-		$productTitle = $productElement->find('.title .long')->text();
+		$productTitle = $productElement->find('.title strong')->text();
 	}
 	$productImage = $productElement->find('.thumb img')->attr('src');
 	$productPrice = $productElement->find('.price')->text();
