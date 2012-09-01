@@ -3,7 +3,7 @@
 define('STATUS_EMPTY_QUERY', 1);
 define('STATUS_OK', 0);
 
-header('Content-type: text/javascript');
+header('Content-type: application/json');
 
 if(!isset($_GET['q']) || empty($_GET['q'])){
 	die(json_encode(array('status' => STATUS_EMPTY_QUERY)));
