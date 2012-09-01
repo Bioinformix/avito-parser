@@ -20,10 +20,24 @@ $productDescription = $document->find('.m_item_desc')->text();
 $productPrice = $document->find('.m_item_price')->text();
 $productPrice = preg_replace('#[^0-9]#', '', $productPrice);
 
+$productOwnerPhoneImageURL = $document->find('.pho')->attr('src');
+$productOwnerPhone = '+79212306424';
+
+$productImages = array();
+$productImageElements = $document->find('.m_item_img');
+foreach($productImageElements as $productImageElement){
+	$productImageElement = pq($productImageElement);
+	$productImages[] = trim($productImageElement->attr('src'));
+}
+
+$productFullPageURL = $document->find('.bottom .list_b_a:eq(1)')->attr('href');
+//echo $productFullPageURL;
+
 $productData = array(
 	'title'			=> trim($productTitle),
-	'description'	=> trim($productDescription),
-	'price'			=> trim($productPrice)
+	'description'	=> trim(strip_tags($productDescription)),
+	'price'			=> trim($productPrice),
+	'phone'			=> trim($productOwnerPhone)
 );
 echo json_encode(array(
 	'status'	=> STATUS_OK,
