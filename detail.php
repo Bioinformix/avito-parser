@@ -3,7 +3,7 @@
 define('STATUS_EMPTY_QUERY', 1);
 define('STATUS_OK', 0);
 
-header('Content-type: text/javascript');
+header('Content-type: application/json');
 
 if(!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id'])){
 	die(json_encode(array('status' => STATUS_EMPTY_QUERY)));
@@ -30,14 +30,20 @@ foreach($productImageElements as $productImageElement){
 	$productImages[] = trim($productImageElement->attr('src'));
 }
 
+$productOwnerNameElement = $document->find('.m_item_offer')->next()->find('li:eq(0)');
+$productOwnerNameElement->find('strong')->remove();
+$productOwnerName = $productOwnerNameElement->text();
+
 $productFullPageURL = $document->find('.bottom .list_b_a:eq(1)')->attr('href');
 //echo $productFullPageURL;
 
 $productData = array(
+	'id'			=> $productID,
 	'title'			=> trim($productTitle),
 	'description'	=> trim(strip_tags($productDescription)),
 	'price'			=> trim($productPrice),
-	'phone'			=> trim($productOwnerPhone)
+	'phone'			=> trim($productOwnerPhone),
+	'ownerName'		=> trim($productOwnerName)
 );
 echo json_encode(array(
 	'status'	=> STATUS_OK,
