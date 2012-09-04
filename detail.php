@@ -27,7 +27,11 @@ $productImages = array();
 $productImageElements = $document->find('.m_item_img');
 foreach($productImageElements as $productImageElement){
 	$productImageElement = pq($productImageElement);
-	$productImages[] = trim($productImageElement->attr('src'));
+
+	$productImageURL = trim($productImageElement->attr('src'));
+	if(!empty($productImageURL)){
+		$productImages[] = $productImageURL;
+	}
 }
 
 $productOwnerNameElement = $document->find('.m_item_offer')->next()->find('li:eq(0)');
@@ -43,7 +47,8 @@ $productData = array(
 	'description'	=> trim(strip_tags($productDescription)),
 	'price'			=> trim($productPrice),
 	'phone'			=> trim($productOwnerPhone),
-	'ownerName'		=> trim($productOwnerName)
+	'ownerName'		=> trim($productOwnerName),
+	'images'		=> $productImages
 );
 echo json_encode(array(
 	'status'	=> STATUS_OK,
